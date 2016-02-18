@@ -3,6 +3,7 @@
 #include <vector>
 #include "Player.h"
 #include "Background.h"
+#include "EnemyControl.h"
 
 namespace ptree = boost::property_tree;
 using namespace Polycode;

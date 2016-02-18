@@ -31,6 +31,7 @@ std::vector<Voxel> Load::LoadEntity(std::string fileName)
 			c++;
 		}
 
+		Voxel shape;
 		shape.boxColor.r = carray[0];
 		shape.boxColor.g = carray[1];
 		shape.boxColor.b = carray[2];

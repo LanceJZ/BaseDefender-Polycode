@@ -2,6 +2,7 @@
 
 std::shared_ptr<Player> p_Player(new Player);
 std::unique_ptr<Background> p_Background(new Background);
+std::shared_ptr<EnemyControl> p_Enemy(new EnemyControl);
 
 Game::Game(PolycodeView *view) : EventHandler()
 {
@@ -30,6 +31,8 @@ Game::Game(PolycodeView *view) : EventHandler()
 
 	p_Background->Setup(pScene);
 	p_Player->Setup(pScene);
+	p_Enemy->PlayerPointer(p_Player);
+	p_Enemy->Setup(pScene);
 
 	m_Paused = false;
 }
@@ -57,12 +60,16 @@ bool Game::Update(void)
 		pCore->doSleep();
 
 		Number frameelapsed = pCore->getElapsed();
+		Number *elapsed = &frameelapsed;
 
 		if (p_Player->m_Active)
 		{
-			p_Player->Update(&frameelapsed);
+			p_Player->Update(elapsed);
 			handlePlayerInput();
 		}
+
+		p_Enemy->Update(elapsed);
+		p_Enemy->UpdateShots(elapsed);
 	}
 
 	if (m_Exit)

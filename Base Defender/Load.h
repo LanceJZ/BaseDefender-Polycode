@@ -13,8 +13,6 @@ public:
 	void ReadVoxelEntity(Entity *entity, std::vector<ScenePrimitive*> boxs);
 
 private:
-	Voxel shape;
-
 	std::vector<Voxel> LoadEntity(std::string fileName);
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <Polycode.h>
 #include <PolycodeView.h>
-#include "Polycode3DPhysics.h"
+#include <Polycode3DPhysics.h>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/foreach.hpp>
@@ -11,6 +11,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include "Random.h"
 
 struct Voxel
 {
@@ -23,5 +24,8 @@ class Common
 public:
 	Common();
 	~Common();
+
+	Vector3 AngleToVector(Number angle, Number magnitude);
+	Number AngleToTarget(Vector3 origin, Vector3 target);
 };
 

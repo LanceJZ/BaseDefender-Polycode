@@ -4,6 +4,8 @@ Actor::Actor(void)
 {
 	m_Active = false;
 
+	m_Rectangle = Polycode::Rectangle(0, 0, 0, 0);
+
 	m_Rotation.Amount = 0;
 	m_Rotation.Acceleration = 0;
 	m_Rotation.Velocity = 0;
@@ -59,14 +61,14 @@ bool Actor::CheckForYTop(void)
 
 void Actor::BounceX(void)
 {
-	m_Velocity.x *= 0.5f;
+	m_Velocity.x *= 0.25f;
 	m_Velocity.x *= -1.0f;
 	m_Acceleration = 0;		
 }
 
 void Actor::BounceY(void)
 {
-	m_Velocity.y *= 0.5f;
+	m_Velocity.y *= 0.25f;
 	m_Velocity.y *= -1.0f;
 	m_Acceleration = 0;
 }
@@ -92,9 +94,37 @@ std::vector<ScenePrimitive*> Actor::LoadVoxEntity(std::string filename, Entity *
 	std::vector<ScenePrimitive*> parts = Load::ReadBoxes(filename);
 	Load::ReadVoxelEntity(model, parts);
 
+	float hmin = 0;
+	float hplus = 0;
+	float wmin = 0;
+	float wplus = 0;
+	
+	for (int part = 0; part < parts.size(); part++)
+	{
+		if (parts[part]->getPosition().x > wplus)
+			wplus = parts[part]->getPosition().x;
+
+		if (parts[part]->getPosition().y > hplus)
+			hplus = parts[part]->getPosition().y;
+
+		if (parts[part]->getPosition().x < wmin)
+			wmin = parts[part]->getPosition().x;
+
+		if (parts[part]->getPosition().y < hmin)
+			hmin = parts[part]->getPosition().y;
+	}
+
+	if (hmin < 0)
+		hmin *= -1;
+
+	if (wmin < 0)
+		wmin *= -1;
+
+	m_Rectangle = Polycode::Rectangle(0, 0, wmin + wplus, hmin + hplus);
+
 	return parts;
 }
-
+// Public methods
 void Actor::Update(Number *elapsed)
 {
 	//Calculate movement this frame according to velocity and acceleration.
@@ -108,6 +138,11 @@ void Actor::Update(Number *elapsed)
 	//Update rectangle. rectangle is always centered to the entity.
 	m_Rectangle.x = m_Position.x;
 	m_Rectangle.y = m_Position.y;
+	//Update AABB
+	m_AABB.min.x = m_Rectangle.x - m_Rectangle.w;
+	m_AABB.max.x = m_Rectangle.x + m_Rectangle.w;
+	m_AABB.min.y = m_Rectangle.y - m_Rectangle.h;
+	m_AABB.max.y = m_Rectangle.y + m_Rectangle.h;
 }
 
 bool Actor::CirclesIntersect(Polycode::Vector3 target, float targetRadius)
@@ -146,4 +181,9 @@ bool Actor::RectangleIntersect(Polycode::Rectangle target)
 bool Actor::ValueInRange(Number value, Number min, Number max)
 {
 	return (value >= min) && (value <= max);
+}
+
+void Actor::SetAABB(ScenePrimitive *shape)
+{
+	m_AABB = shape->getWorldAABB();
 }

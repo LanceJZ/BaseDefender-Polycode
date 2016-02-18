@@ -88,6 +88,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Boost;$(SolutionDir)..\Polycode_New\include</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile />
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -117,6 +118,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Boost;$(SolutionDir)..\Polycode_New\include</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile />
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,21 +147,35 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="Angreifer.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyControl.h" />
+    <ClInclude Include="EnemyShot.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerShot.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="RandomMover.h" />
+    <ClInclude Include="RandomShooter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Angreifer.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Common.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyControl.cpp" />
+    <ClCompile Include="EnemyShot.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerShot.cpp" />
     <ClCompile Include="Random.cpp" />
+    <ClCompile Include="RandomMover.cpp" />
+    <ClCompile Include="RandomShooter.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

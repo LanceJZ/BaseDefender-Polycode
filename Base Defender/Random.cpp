@@ -13,6 +13,8 @@ double Random::Number(double Min, double Max)
 	bool negitiveMin = false;
 	bool negitiveMax = false;
 
+	int MinNegitive = 0;
+
 	if (Min < 0)
 	{
 		negitiveMin = true;
@@ -25,11 +27,18 @@ double Random::Number(double Min, double Max)
 		Max *= -1;
 	}
 
+	if (negitiveMin && !negitiveMax)
+	{
+		Max += Min;
+		MinNegitive = Min;
+		Min = 0;
+	}
+
 	std::uniform_real_distribution<double> roll(Min, Max);
 	double ranNum = roll(m_Random);
 
-	if (negitiveMin)
-		ranNum -= Min;
+	if (negitiveMin && !negitiveMax)
+		ranNum -= MinNegitive;
 
 	if (negitiveMin && negitiveMax)
 		ranNum *= -1;

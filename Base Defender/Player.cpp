@@ -7,7 +7,7 @@ Player::Player()
 	m_DecelerationY = 0.1;
 	m_DecelerationX = 0.02;
 
-	p_ThrustTimer = std::unique_ptr<Timer>(new Timer(false, 2000));
+	p_ThrustTimer = std::unique_ptr<Timer>(new Timer(false, 0));
 	p_ThrustTimer->Reset();
 }
 
@@ -130,26 +130,12 @@ void Player::TurnRight(void)
 
 void Player::MoveUp(void)
 {
-	if (pCamera->isAABBInFrustum(mAABB))
-	{
-		m_Acceleration.y = 10;
-	}
-	else
-	{
-		m_Acceleration.y = 0;
-	}
+	m_Acceleration.y = 10;
 }
 
 void Player::MoveDown(void)
 {
-	if (pCamera->isAABBInFrustum(mAABB))
-	{
-		m_Acceleration.y = -10;
-	}
-	else
-	{
-		m_Acceleration.y = 0;
-	}	
+	m_Acceleration.y = -10;
 }
 
 void Player::ThrustOn(void)

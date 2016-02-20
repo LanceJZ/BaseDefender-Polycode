@@ -39,13 +39,17 @@ public:
 protected:
 	float m_WindowHeight;
 	float m_WindowWidth;
+	float m_WorldWidth;
+	float m_WorldHeight;
 	float m_DecelerationX; //Amount of deceleration on X per frame.
 	float m_DecelerationY; //Amount of deceleration on Y per frame.
 
+	bool Otherside(Vector3 & position);
 	bool CheckForXLeft(void);
 	bool CheckForXRight(void);
 	bool CheckForYBottom(void);
 	bool CheckForYTop(void);
+	void SideEdge(void);
 	void BounceX(void);
 	void BounceY(void);
 	void Decelerate(void); // Decelerate actor.

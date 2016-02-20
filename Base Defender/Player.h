@@ -1,5 +1,6 @@
 #pragma once
 #include "Actor.h"
+#include "PlayerShot.h"
 
 class Player : public Actor
 {
@@ -33,14 +34,16 @@ private:
 	Entity *pShipModel;
 	Entity *pThrust1;
 	Entity *pThrust2;
+	ScenePrimitive *pRadarDot;
 	Camera *pCamera;
 	SceneLight *pLight;
-	AABB mAABB;
 
 	std::vector<ScenePrimitive*> m_ShipParts;
-
-	std::unique_ptr<Timer> p_ThrustTimer;
+	std::vector<std::unique_ptr<PlayerShot>> vup_Shots;
+	std::unique_ptr<Timer> up_ThrustTimer;
 
 	bool m_Flipped;
+
+	void UpdateRadar(void);
 };
 

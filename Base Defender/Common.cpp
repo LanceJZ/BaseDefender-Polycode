@@ -17,3 +17,8 @@ Number Common::AngleToTarget(Vector3 origin, Vector3 target)
 {
 	return std::atan2(target.y - origin.y, target.x - origin.x);
 }
+
+Number Common::RandomAngle(void)
+{
+	return Random::Number(0, 2 * PI);
+}

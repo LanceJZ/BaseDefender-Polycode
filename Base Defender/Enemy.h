@@ -11,8 +11,6 @@ public:
 
 	void Setup(CollisionScene *scene);
 	void Update(Number *elapsed);
-	void UpdateShots(Number *elapsed);
-	void DeactivateShot(int shot);
 	void Pause(bool paused);
 	void Hit(void);
 	void Activate(void);
@@ -23,15 +21,19 @@ public:
 
 protected:
 	std::vector<ScenePrimitive*> m_ShipParts;
-	std::shared_ptr<Player> pPlayer;
+	std::shared_ptr<Player> spPlayer;
+
 	CollisionScene *pScene;
+	Camera *pCamera;
 	Entity *pShipModel;
 	Entity *pShipModelSide;
+	ScenePrimitive *pRadarDot;
 
 	Number mMaxY;
 	Number mMaxX;
 
 private:
+	void UpdateRadar(void);
 
 };
 

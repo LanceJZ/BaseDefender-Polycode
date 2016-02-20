@@ -33,7 +33,7 @@ void RandomShooter::FireShot(Vector3 position, CollisionScene *scene)
 		vup_Shots.at(spawnShot)->Setup(scene);
 	}
 
-	vup_Shots.at(spawnShot)->Activate(position, AngleToVector(Random::Number(0, 2 * PI), 75), mShotLifeTimerBase);
+	vup_Shots.at(spawnShot)->Activate(position, AngleToVector(RandomAngle(), 75), mShotLifeTimerBase);
 }
 
 bool RandomShooter::TimeToFire(void)

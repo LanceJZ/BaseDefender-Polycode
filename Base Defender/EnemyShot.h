@@ -16,7 +16,8 @@ public:
 
 private:
 	ScenePrimitive *pShot;
+	ScenePrimitive *pShotSide;
 
-	std::unique_ptr<Timer> pLifeTimer;
+	std::unique_ptr<Timer> upLifeTimer;
 };
 

@@ -7,8 +7,8 @@ Player::Player()
 	m_DecelerationY = 0.1;
 	m_DecelerationX = 0.02;
 
-	p_ThrustTimer = std::unique_ptr<Timer>(new Timer(false, 0));
-	p_ThrustTimer->Reset();
+	up_ThrustTimer = std::unique_ptr<Timer>(new Timer(false, 0));
+	up_ThrustTimer->Reset();
 }
 
 Player::~Player()
@@ -20,6 +20,11 @@ void Player::Setup(CollisionScene * scene)
 	pScene = scene;
 	pCamera = scene->getDefaultCamera();
 
+	pRadarDot = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1, 0.5, 0.1);
+	pRadarDot->setColor(0.36, 0.25, 0.70, 1);
+	pRadarDot->setPosition(0, 0, 10);
+	scene->addChild(pRadarDot);
+
 	pLight = new SceneLight(SceneLight::POINT_LIGHT, pScene, 1225000);
 	pLight->setPosition(200, 500, 1000);
 	pLight->setLightColor(1, 1, 1);
@@ -28,7 +33,6 @@ void Player::Setup(CollisionScene * scene)
 	pShipModel = new Entity();
 	m_ShipParts = LoadVoxEntity("Resources/Player", pShipModel);
 	pScene->addChild(pShipModel);
-	//pShipModel->addChild(pLight);
 	pThrust1 = new Entity();
 	LoadVoxEntity("Resources/Thrust1", pThrust1);
 	pShipModel->addChild(pThrust1);
@@ -52,50 +56,32 @@ void Player::Update(Number * elapsed)
 	Decelerate();
 
 	pShipModel->setPosition(m_Position); //Player Position
+	pLight->setPositionX(m_Position.x);
 	pCamera->setPositionX(m_Position.x + m_Velocity.x * 0.5);
 	pCamera->lookAt(Vector3(m_Position.x + m_Velocity.x * 0.5, 0, 0));
 
-	if (!pCamera->isAABBInFrustum(mAABB))
-	{
-		m_Acceleration = 0;
 
-		if (m_Position.y > 78)
-		{
-			m_Position.y = 78;
-			BounceY();
-		}
-		else if (m_Position.y < -50)
-		{
-			m_Position.y = -50;
-			BounceY();
-		}
+	if (m_Position.y > 78)
+	{
+		m_Position.y = 78;
+		BounceY();
+	}
+	else if (m_Position.y < -50)
+	{
+		m_Position.y = -50;
+		BounceY();
 	}
 
-	if (m_Position.x > 800)
-		m_Position.x = -800;
-
-	if (m_Position.x < -800)
-		m_Position.x = 800;
-
-	if (m_Position.y > 0)
-	{
-		mAABB.min.y = m_Position.y + 5;
-		mAABB.max.y = m_Position.y + 5;
-	}
-	else
-	{
-		mAABB.min.y = m_Position.y - 40;
-		mAABB.max.y = m_Position.y - 40;
-	}
-
-	mAABB.min.x = m_Position.x;
-	mAABB.max.x = m_Position.x;
-
-	pLight->setPositionX(pShipModel->getPosition().x);
+	SideEdge();
+	UpdateRadar();
 }
 
 void Player::UpdateShots(Number * elapsed)
 {
+	for (size_t shot = 0; shot < vup_Shots.size(); shot++)
+	{
+		vup_Shots.at(shot)->Update(elapsed);
+	}
 }
 
 void Player::GotPoints(int points)
@@ -155,18 +141,17 @@ void Player::ThrustOn(void)
 		}
 	}
 
-	if (p_ThrustTimer->getElapsedf() > 0.031)
+	if (up_ThrustTimer->getElapsedf() > 0.031)
 	{
 		pThrust1->enabled = true;
 		pThrust2->enabled = false;
-		p_ThrustTimer->Reset();
+		up_ThrustTimer->Reset();
 	}
 	else
 	{
 		pThrust1->enabled = false;
 		pThrust2->enabled = true;
 	}
-
 }
 
 void Player::ThrustOff(void)
@@ -185,6 +170,37 @@ void Player::ShieldOff(void)
 
 void Player::FireShot(void)
 {
+	bool spawnNewShot = true;
+	int spawnShot = 0;
+	Number shotVelocity = 100;
+
+	for (size_t shotCheck = 0; shotCheck < vup_Shots.size(); shotCheck++)
+	{
+		if (!vup_Shots.at(shotCheck)->m_Active)
+		{
+			spawnNewShot = false;
+			spawnShot = shotCheck;
+			break;
+		}
+	}
+
+	if (spawnNewShot)
+	{
+		vup_Shots.push_back(std::unique_ptr<PlayerShot>(new PlayerShot));
+		spawnShot = vup_Shots.size() - 1;
+		vup_Shots.at(spawnShot)->Setup(pScene);
+	}
+
+	if (m_Flipped)
+	{
+		shotVelocity = -100 + m_Velocity.x * 0.75;
+	}
+	else
+	{
+		shotVelocity = 100 + m_Velocity.x * 0.75;
+	}
+
+	vup_Shots.at(spawnShot)->Activate(m_Position, Vector3(shotVelocity, m_Velocity.y * 0.1, 0));
 }
 
 void Player::Hit(void)
@@ -205,4 +221,12 @@ void Player::NewGame(void)
 
 void Player::Reset(void)
 {
+}
+
+void Player::UpdateRadar(void)
+{
+	Number dotY = (50 + m_Position.y) / 6.4;
+
+	pRadarDot->setPositionY(-78 + dotY);
+	pRadarDot->setPositionX(pCamera->getPosition().x);
 }

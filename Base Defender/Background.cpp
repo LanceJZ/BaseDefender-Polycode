@@ -22,15 +22,15 @@ void Background::Setup(CollisionScene * scene)
 		dot->getMesh()->addVertex(0, 0, 0);
 		dotSide = new SceneMesh(Mesh::POINT_MESH);
 		dotSide->getMesh()->addVertex(0, 0, 0);
-		dot->setPosition(Vector3(Random::Number(-800, 800), Random::Number(-100, 100), -1));
+		dot->setPosition(Vector3(Random::Number(-1200, 1200), Random::Number(-100, 100), -1));
 		pScene->addChild(dot);
 
-		if (dot->getPosition().x > 650)
+		if (dot->getPosition().x > 1050)
 		{
 			dotSide->setPosition(dot->getPosition().x - 1600, dot->getPosition().y, -1);
 			//pScene->addChild(dotSide);
 		}
-		else if (dot->getPosition().x < -650)
+		else if (dot->getPosition().x < -1050)
 		{
 			dotSide->setPosition(dot->getPosition().x + 1600, dot->getPosition().y, -1);
 			//pScene->addChild(dotSide);

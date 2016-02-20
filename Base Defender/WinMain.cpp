@@ -14,7 +14,7 @@ std::unique_ptr<main> pMain;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	PolycodeView *view = new PolycodeView(hInstance, nCmdShow, L"Base Defender using Polycode Aphla 00.00");
+	PolycodeView *view = new PolycodeView(hInstance, nCmdShow, L"Base Defender using Polycode Aphla 00.01");
 
 #if defined(_DEBUG)
 	pGame = new Game(view);

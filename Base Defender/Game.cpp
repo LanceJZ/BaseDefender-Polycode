@@ -1,13 +1,15 @@
 #include "Game.h"
 
-std::shared_ptr<Player> p_Player(new Player);
-std::unique_ptr<Background> p_Background(new Background);
-std::shared_ptr<EnemyControl> p_Enemy(new EnemyControl);
+std::shared_ptr<Player> sp_Player(new Player);
+std::unique_ptr<Background> up_Background(new Background);
+std::shared_ptr<EnemyControl> sp_Enemy(new EnemyControl);
+std::unique_ptr<City> up_City(new City);
+std::unique_ptr<HUD> up_HUD(new HUD);
 
 Game::Game(PolycodeView *view) : EventHandler()
 {
 	m_Exit = false;
-	pCore = new POLYCODE_CORE(view, 1280, 720, false, true, 0, 0, 90, 0, true);
+	pCore = new POLYCODE_CORE(view, 1280, 720, false, true, 0, 0, 120, 0, true);
 	pScene = new CollisionScene(CollisionScene::SCENE_3D);
 	pCore->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
 
@@ -15,24 +17,26 @@ Game::Game(PolycodeView *view) : EventHandler()
 	CoreServices::getInstance()->getResourceManager()->addDirResource("default", false);
 	CoreServices::getInstance()->getResourceManager()->addDirResource("Resources", true);
 
-	SceneLight *light;
+	//SceneLight *light;
 
-	light = new SceneLight(SceneLight::POINT_LIGHT, pScene, 98000);
-	light->setPosition(-500, -500, 500);
-	light->setLightColor(1, 1, 1);
-	pScene->addLight(light);
+	//light = new SceneLight(SceneLight::POINT_LIGHT, pScene, 98000);
+	//light->setPosition(-500, -500, 500);
+	//light->setLightColor(1, 1, 1);
+	//pScene->addLight(light);
 
-	light = new SceneLight(SceneLight::POINT_LIGHT, pScene, 36000);
-	light->setPosition(500, -70, 500);
-	light->setLightColor(1, 1, 1);
-	pScene->addLight(light);
+	//light = new SceneLight(SceneLight::POINT_LIGHT, pScene, 36000);
+	//light->setPosition(500, -70, 500);
+	//light->setLightColor(1, 1, 1);
+	//pScene->addLight(light);
 
 	pScene->getDefaultCamera()->setPositionZ(200);
 
-	p_Background->Setup(pScene);
-	p_Player->Setup(pScene);
-	p_Enemy->PlayerPointer(p_Player);
-	p_Enemy->Setup(pScene);
+	up_Background->Setup(pScene);
+	sp_Player->Setup(pScene);
+	sp_Enemy->PlayerPointer(sp_Player);
+	sp_Enemy->Setup(pScene);
+	up_City->Setup(pScene, Vector3(0, -60, 0));
+	up_HUD->Setup(pScene);
 
 	m_Paused = false;
 }
@@ -62,15 +66,19 @@ bool Game::Update(void)
 		Number frameelapsed = pCore->getElapsed();
 		Number *elapsed = &frameelapsed;
 
-		if (p_Player->m_Active)
+		if (sp_Player->m_Active)
 		{
-			p_Player->Update(elapsed);
+			sp_Player->Update(elapsed);
 			handlePlayerInput();
 		}
 
-		p_Enemy->Update(elapsed);
-		p_Enemy->UpdateShots(elapsed);
+		sp_Enemy->Update(elapsed);
+		sp_Enemy->UpdateShots(elapsed);
+		sp_Player->UpdateShots(elapsed);
+		up_HUD->Update(elapsed);
+		up_City->Update(elapsed);
 	}
+
 
 	if (m_Exit)
 	{
@@ -85,10 +93,10 @@ void Game::handlePlayerInput(void)
 	//Main keys.
 	bool key_up = pCore->getInput()->getKeyState(KEY_UP);
 	bool key_down = pCore->getInput()->getKeyState(KEY_DOWN);
-	bool key_thrust = pCore->getInput()->getKeyState(KEY_LSHIFT);
+	bool key_thrust = pCore->getInput()->getKeyState(KEY_LCTRL);
 	bool key_left = pCore->getInput()->getKeyState(KEY_LEFT);
 	bool key_right = pCore->getInput()->getKeyState(KEY_RIGHT);
-	bool key_fire = pCore->getInput()->getKeyState(KEY_LCTRL);
+	bool key_fire = pCore->getInput()->getKeyState(KEY_LSHIFT);
 	//Alternative keys.
 	bool key_thrustalt = pCore->getInput()->getKeyState(KEY_q);
 	bool key_upalt = pCore->getInput()->getKeyState(KEY_w);
@@ -99,29 +107,34 @@ void Game::handlePlayerInput(void)
 
 	if (key_up)
 	{
-		p_Player->MoveUp();
+		sp_Player->MoveUp();
 	}
 	else if (key_down)
 	{
-		p_Player->MoveDown();
+		sp_Player->MoveDown();
 	}
 
 	if (key_thrust)
 	{
-		p_Player->ThrustOn();
+		sp_Player->ThrustOn();
 	}
 	else
 	{
-		p_Player->ThrustOff();
+		sp_Player->ThrustOff();
 	}
 
 	if (key_right)
 	{
-		p_Player->TurnRight();
+		sp_Player->TurnRight();
 	}
 
 	if (key_left)
 	{
-		p_Player->TurnLeft();
+		sp_Player->TurnLeft();
+	}
+
+	if (key_fire)
+	{
+		sp_Player->FireShot();
 	}
 }

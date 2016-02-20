@@ -17,7 +17,7 @@ void RandomMover::Update(Number * elapsed)
 
 Vector3 RandomMover::VectorChange(void)
 {
-	return AngleToVector(Random::Number(0, 2 * PI), Random::Number(mMoveSpeed / 16, mMoveSpeed));
+	return AngleToVector(RandomAngle(), Random::Number(mMoveSpeed / 16, mMoveSpeed));
 }
 
 bool RandomMover::DoesMovementChange(void)

@@ -14,29 +14,29 @@ void EnemyControl::Setup(CollisionScene * scene)
 {
 	pScene = scene;
 
-	SpawnAngreifers(10);
+	SpawnAngreifers(20);
 }
 
 void EnemyControl::Update(Number * elapsed)
 {
-	for (size_t ship = 0; ship < vp_Angreifers.size(); ship++)
+	for (size_t ship = 0; ship < vup_Angreifers.size(); ship++)
 	{
-		if (vp_Angreifers.at(ship)->m_Active)
-			vp_Angreifers.at(ship)->Update(elapsed);
+		if (vup_Angreifers.at(ship)->m_Active)
+			vup_Angreifers.at(ship)->Update(elapsed);
 	}
 }
 
 void EnemyControl::UpdateShots(Number * elapsed)
 {
-	for (size_t ship = 0; ship < vp_Angreifers.size(); ship++)
+	for (size_t ship = 0; ship < vup_Angreifers.size(); ship++)
 	{
-		vp_Angreifers.at(ship)->UpdateShots(elapsed);
+		vup_Angreifers.at(ship)->UpdateShots(elapsed);
 	}
 }
 
 void EnemyControl::PlayerPointer(std::shared_ptr<Player> playerPointer)
 {
-	pPlayer = playerPointer;
+	spPlayer = playerPointer;
 }
 
 void EnemyControl::SpawnAngreifers(int numberOfShips)
@@ -46,9 +46,9 @@ void EnemyControl::SpawnAngreifers(int numberOfShips)
 		bool spawnNewShip = true;
 		int spawnShip = 0;
 
-		for (size_t ship = 0; ship < vp_Angreifers.size(); ship++)
+		for (size_t ship = 0; ship < vup_Angreifers.size(); ship++)
 		{
-			if (!vp_Angreifers.at(ship)->m_Active)
+			if (!vup_Angreifers.at(ship)->m_Active)
 			{
 				spawnNewShip = false;
 				spawnShip = ship;
@@ -58,13 +58,13 @@ void EnemyControl::SpawnAngreifers(int numberOfShips)
 
 		if (spawnNewShip)
 		{
-			vp_Angreifers.push_back(std::unique_ptr<Angreifer>(new Angreifer));
-			spawnShip = vp_Angreifers.size() - 1;
-			vp_Angreifers.at(spawnShip)->Setup(pScene);
-			vp_Angreifers.at(spawnShip)->PlayerPointer(pPlayer);
+			vup_Angreifers.push_back(std::unique_ptr<Angreifer>(new Angreifer));
+			spawnShip = vup_Angreifers.size() - 1;
+			vup_Angreifers.at(spawnShip)->Setup(pScene);
+			vup_Angreifers.at(spawnShip)->PlayerPointer(spPlayer);
 		}
 
-		vp_Angreifers.at(spawnShip)->Reset();
+		vup_Angreifers.at(spawnShip)->Reset();
 	}
 }
 

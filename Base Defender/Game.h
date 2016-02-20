@@ -4,6 +4,8 @@
 #include "Player.h"
 #include "Background.h"
 #include "EnemyControl.h"
+#include "City.h"
+#include "HUD.h"
 
 namespace ptree = boost::property_tree;
 using namespace Polycode;

@@ -12,6 +12,24 @@ Actor::Actor(void)
 
 	m_WindowWidth = 800 / (80 / 3.7);
 	m_WindowHeight = 720 / (80 / 3.7);
+
+	m_WorldWidth = 2400;
+}
+
+bool Actor::Otherside(Vector3 & position)
+{
+	if (m_Position.x > m_WorldWidth * 0.44)
+	{		
+		position.x -= m_WorldWidth;
+		return true;
+	}
+	else if (m_Position.x < -m_WorldWidth * 0.44)
+	{		
+		position.x += m_WorldWidth;
+		return true;
+	}
+
+	return false;
 }
 
 //Protected methods
@@ -57,6 +75,14 @@ bool Actor::CheckForYTop(void)
 	}
 
 	return false;
+}
+
+void Actor::SideEdge(void)
+{
+	if (m_Position.x > 1200)
+		m_Position.x = -1200;
+	else if (m_Position.x < -1200)
+		m_Position.x = 1200;
 }
 
 void Actor::BounceX(void)

@@ -27,5 +27,6 @@ public:
 
 	Vector3 AngleToVector(Number angle, Number magnitude);
 	Number AngleToTarget(Vector3 origin, Vector3 target);
+	Number RandomAngle(void);
 };
 

@@ -54,9 +54,9 @@ std::vector<Voxel> Load::LoadEntity(std::string fileName)
 			p++;
 		}
 
-		VOXshape[voxRead].Position.x = parray[0];
-		VOXshape[voxRead].Position.y = parray[1];
-		VOXshape[voxRead].Position.z = parray[2];
+		VOXshape[voxRead].Position.x = int(parray[0]);
+		VOXshape[voxRead].Position.y = int(parray[1]);
+		VOXshape[voxRead].Position.z = int(parray[2]);
 
 		voxRead++;
 	}
@@ -77,7 +77,7 @@ std::vector<ScenePrimitive*> Load::ReadBoxes(std::string fileName)
 	for (int vox = 0; vox < shapeRead.size(); vox++)
 	{
 		box = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1, 1, 1);
-		box->setMaterialByName("Default");
+		//box->setMaterialByName("Default");
 		box->setPosition(shapeRead[vox].Position);
 		box->setColor(shapeRead[vox].boxColor);
 		box->id = std::to_string(vox);

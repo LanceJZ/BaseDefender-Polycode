@@ -149,11 +149,13 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Angreifer.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="City.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyControl.h" />
     <ClInclude Include="EnemyShot.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="HUD.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerShot.h" />
@@ -165,11 +167,13 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Angreifer.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="City.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyControl.cpp" />
     <ClCompile Include="EnemyShot.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerShot.cpp" />

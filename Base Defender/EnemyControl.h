@@ -14,12 +14,12 @@ public:
 
 private:
 	CollisionScene *pScene;
-	std::shared_ptr<Player> pPlayer;
-	std::vector<std::unique_ptr<Angreifer>> vp_Angreifers;
+	std::shared_ptr<Player> spPlayer;
+	std::vector<std::unique_ptr<Angreifer>> vup_Angreifers;
 
 	UINT mNumberOfAngreifers;
-	std::unique_ptr<Timer> pAngreiferSpawnTimer;
-	std::unique_ptr<Timer> pCityHuntTimer;
+	std::unique_ptr<Timer> upAngreiferSpawnTimer;
+	std::unique_ptr<Timer> upCityHuntTimer;
 	float mAngreiferSpawnTimerAmount;
 	float mCityHuntTimerAmount;
 
